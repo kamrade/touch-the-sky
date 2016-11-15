@@ -6,6 +6,8 @@ module.exports = (function() {
 
 	// cache dom
 	var $canva = $(".canva");
+	var rect = document.getElementById('canva').getBoundingClientRect()
+	console.log(rect);
 
 	$('.element').each((index, element)=>{
 		var elementWidth = 100;
@@ -20,7 +22,9 @@ module.exports = (function() {
 	});
 
 	$canva.on('click', function(e) {
-		console.dir(e);
+		console.dir(e.clientX);
+		console.dir(e.clientY);
+		console.dir($canva);
 	});
 
 	return {
