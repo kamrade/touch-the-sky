@@ -1,65 +1,65 @@
 'use strict';
 
-var $ = jQuery = require('jquery');
-
 var maxLeft = 0;
 var maxTop = 0;
 
 module.exports = (function() {
 
+	// CONST
+	const elWidth = 100;
+	const elHeight = 100;
+
 	// cache dom
-	var $canva = $(".canva");
-	var $elements = $(".element");
-	var rect = document.getElementById('canva').getBoundingClientRect()
+	var $canva = document.querySelector(".canva");
+	var $elements = document.querySelectorAll(".element");
+	var rect = $canva.getBoundingClientRect();
+	console.log(rect);
 
-	$elements.each((index, element)=>{
-		var elementWidth = 100;
-		var elementHeight = 100;
-		console.dir($canva);
-		maxLeft = $canva[0].clientWidth - elementWidth;
-		maxTop = $canva[0].clientHeight - elementHeight;
-		$(".maxLeft").find("span").text(maxLeft);
-		$(".maxTop").find("span").text(maxTop);
-		var left = getRand(1, maxLeft);
-		var top = getRand(1, maxTop);
-		$(element).css('left', left);
-		$(element).css('top', top);
-		$(element).css('background-color', getRandColor());
-	});
+	// вычисленные значения
+	var maxLeft = $canva.clientWidth - elWidth;
+	var maxTop = $canva.clientHeight - elHeight;
+	document.querySelector(".maxLeft span").innerText = maxLeft;
+	document.querySelector(".maxTop span").innerText = maxTop;
 
-	$elements.on('mousedown', function(e) {
+	for(var i = 0, l = $elements.length; i < l; i++) {
+		let left = getRand(1, maxLeft);
+		let top  = getRand(1, maxTop);
+		$elements[i].style.left = left + "px";
+		$elements[i].style.top = top + "px";
+		$elements[i].style.backgroundColor = getRandColor();
+	}
 
-		var $el = $(this);
-		moveTo(e);
-		$canva.append($el);
-		$el.css("z-index", 100);
-
-		$canva.on("mousemove", moveTo);
-		$canva.on("mouseup", unbindAll);
+	$canva.addEventListener('mousedown', function(e) {
+		if (e.target.className == 'element') {
+			moveTo(e);
+		}
+		$canva.appendChild(e.target);
+		$canva.addEventListener('mousemove', moveTo, false)
+		$canva.addEventListener('mouseup', unbindAll);
 
 		function moveTo (e) {
-			var left = e.pageX - $canva[0].offsetLeft - 50;
-			var top = e.pageY - $canva[0].offsetTop -  50;
-			// console.log(`${left}, ${top}`);
+			var left = e.pageX - $canva.offsetLeft - 50;
+			var top = e.pageY - $canva.offsetTop -  50;
 			if((left > -1) && (top > -1) && (left < maxLeft) && (top < maxTop) ) {
-				$el.css("left", left);
-				$el.css("top", top);
-				console.log(left, top);
+				e.target.style.left = left + 'px';
+				e.target.style.top = top + 'px';
 			}
 		};
-
-		function unbindAll() {
-			$canva.off("mousemove");
-			$el.off("mouseup");
-		};
-
-	});
-
-	return {
-		test: 'test'
-	};
+	}, false);
 
 })();
+// 		function unbindAll() {
+// 			$canva.off("mousemove");
+// 			$el.off("mouseup");
+// 		};
+//
+// 	});
+//
+// 	return {
+// 		test: 'test'
+// 	};
+//
+// })();
 
 // FUNCTIONALITY
 function getRandColor() {
