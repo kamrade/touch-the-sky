@@ -1,0 +1,22 @@
+@import '../../node_modules/bootstrap-sass/assets/stylesheets/_bootstrap.scss'
+@import url('https://fonts.googleapis.com/css?family=Arimo:400,400i,700,700i&subset=cyrillic-ext')
+@import 'settings'
+
+body
+	font-family: 'Arimo', sans-serif
+
+$gray: #d9dde3
+
+.canva
+	height: 400px
+	background: $gray
+	border: 1px solid darken($gray, 10%)
+	position: relative
+	cursor: pointer
+
+.element
+	height: 100px
+	width: 100px
+	border: 3px solid white
+	position: absolute
+	z-index: 0
