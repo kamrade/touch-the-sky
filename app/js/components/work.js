@@ -35,11 +35,17 @@ module.exports = (function() {
 
 	$canva.addEventListener('mousedown', function(e) {
 		var target;
+		var shiftX;
+		var shiftY;
 		if (e.target.className == 'element') {
 			target = e.target;
+			shiftX = e.offsetX+3;
+			shiftY = e.offsetY+4;
 			moveTo(e);
 		} else {
+			console.log('stop');
 			return 0;
+			console.log('you shouldn"t see this');
 		}
 		$canva.appendChild(target);
 		document.addEventListener('mousemove', moveTo, false)
@@ -51,12 +57,9 @@ module.exports = (function() {
 		}
 
 		function moveTo (e) {
-			var left = e.pageX - $canva.offsetLeft - 50;
-			var top = e.pageY - $canva.offsetTop -  50;
+			var left = e.pageX - $canva.offsetLeft - shiftX;
+			var top = e.pageY - $canva.offsetTop - shiftY;
 
-			// console.log("---");
-			// console.log(e.offsetX);
-			// console.log(e.offsetY);
 
 			if (left < -1) {
 				if (top < -1) {
