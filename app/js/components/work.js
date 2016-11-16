@@ -29,6 +29,10 @@ module.exports = (function() {
 		$elements[i].style.backgroundColor = getRandColor();
 	}
 
+	$canva.ondragstart = function(e) {
+		e.preventDefault();
+	};
+
 	$canva.addEventListener('mousedown', function(e) {
 		var target;
 		if (e.target.className == 'element') {
@@ -49,33 +53,45 @@ module.exports = (function() {
 		function moveTo (e) {
 			var left = e.pageX - $canva.offsetLeft - 50;
 			var top = e.pageY - $canva.offsetTop -  50;
-			if((left < -1) && (top > -1) && (top < maxTop)) {
-				target.style.left = '0px';
-				target.style.top = top + 'px';
-			} else if ((top < -1) && (left < maxLeft) && (left > -1))  {
-				target.style.left = left + 'px';
-				target.style.top = '0px';
-			} else if ((left > maxLeft) && (top > -1) && (top < maxTop)) {
-				target.style.left = maxLeft + 'px';
-				target.style.top = top + 'px';
-			} else if ((top > maxTop) && (left > -1) && (left < maxLeft)) {
-				target.style.left = left + 'px';
-				target.style.top = maxTop + 'px';
-			} else if ((left < -1) && (top < -1)) {
-				target.style.left = '0px';
-				target.style.top = '0px';
-			} else if ((left > maxLeft) && (top > maxTop)) {
-				target.style.left = maxLeft + 'px';
-				target.style.top = maxTop + 'px';
-			} else if ((top < -1) && (left > maxLeft)) {
-				target.style.left = maxLeft + 'px';
-				target.style.top = '0px';
-			} else if ((left < -1) && (top > maxTop)) {
-				target.style.left = '0px';
-				target.style.top = maxTop + 'px';
+
+			// console.log("---");
+			// console.log(e.offsetX);
+			// console.log(e.offsetY);
+
+			if (left < -1) {
+				if (top < -1) {
+					target.style.left = '0px';
+					target.style.top = '0px';
+				} else if (top > maxTop) {
+					target.style.left = '0px';
+					target.style.top = maxTop + 'px';					
+				} else {
+					target.style.left = '0px';
+					target.style.top = top + 'px';					
+				}
+			} else if (left > maxLeft) {
+				if(top < -1) {
+					target.style.left = maxLeft + 'px';
+					target.style.top = '0px';					
+				} else if (top > maxTop) {
+					target.style.left = maxLeft + 'px';
+					target.style.top = maxTop + 'px';					
+				} else {
+					target.style.left = maxLeft + 'px';
+					target.style.top = top + 'px';
+				}
 			} else {
-				target.style.left = left + 'px';
-				target.style.top = top + 'px';
+				if(top < -1) {
+					target.style.left = left + 'px';
+					target.style.top = '0px';					
+				} else if (top > maxTop) {
+					target.style.left = left + 'px';
+					target.style.top = maxTop + 'px';					
+				} else {
+					target.style.left = left + 'px';
+					target.style.top = top + 'px';
+				}
+
 			}
 		};
 	}, false);
@@ -85,7 +101,11 @@ module.exports = (function() {
 // FUNCTIONALITY
 function getRandColor() {
 	var opacity = (getRand(30, 100)*0.01).toString();
-	return "rgba(" + getRand(0, 255) + "," + getRand(0, 255) + "," + getRand(0, 255) + "," + opacity + ")"
+	return "rgba("
+		+ getRand(0, 255)
+		+ "," + getRand(0, 255)
+		+ "," + getRand(0, 255)
+		+ "," + opacity + ")";
 }
 
 function getRand(min, max) {
